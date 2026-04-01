@@ -4,7 +4,7 @@ Enumerate Microsoft service access from a refresh token.
 
 CloudProwl takes a refresh token and uses token exchange to discover which Microsoft services the user has access to.
 
-<img width="1380" height="765" alt="image" src="https://github.com/user-attachments/assets/d50ce4f7-ccdd-480e-8bca-7e911956bc77" />
+<img width="1380" height="765" alt="image" src="https://github.com/user-attachments/assets/c8391e30-ae10-4d1d-bb70-29adaa2a270c" />
 
 ## Services Enumerated
 
