@@ -449,11 +449,28 @@ def print_dataverse_results(svc, env_results):
 
     print()
 
+def get_output_file():
+    for flag in ("-o", "--output"):
+        if flag in sys.argv:
+            i = sys.argv.index(flag)
+            if len(sys.argv) <= (i+1):
+                print(f"Error: {Colors.RED}{flag} expects a filename{Colors.RESET}")
+                sys.exit(1)
+            return sys.argv[i+1]
+    return None
+
+def write_token(tokenName, token, output_file):
+    if output_file is None:
+        return
+    with open(output_file, "a", encoding="utf-8") as f:
+        f.write(tokenName + " = " + token + "\n\n")
 
 def main():
-    if len(sys.argv) != 2 or sys.argv[1] in ("-h", "--help"):
-        print("Usage: python3 cloudprowl.py <refresh_token>")
+    if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help"):
+        print("Usage: python3 cloudprowl.py <refresh_token> [-o|--output FILE]")
         sys.exit(1)
+
+    output_file = get_output_file()
 
     refresh_token = sys.argv[1].strip()
     if not refresh_token:
@@ -515,6 +532,8 @@ def main():
             print(f"        Access: {Colors.GREEN}{Colors.BOLD}CONFIRMED ({status}){Colors.RESET}")
             print(f"        Detail: {summary}")
             print(f"        {Colors.BLUE}Impact: {svc['context']}{Colors.RESET}")
+            if output_file:
+                write_token(name, access_token, output_file)
         elif access is None:
             print(f"        Access: {Colors.YELLOW}AMBIGUOUS ({status}){Colors.RESET}")
             print(f"        Detail: {summary}")
@@ -523,6 +542,8 @@ def main():
             print(f"        Detail: {summary}")
 
         print()
+    if output_file:
+        print(f"{Colors.GREEN}Tokens have been written in {output_file}")
 
 
 if __name__ == "__main__":
